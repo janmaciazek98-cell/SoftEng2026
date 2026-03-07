@@ -25,6 +25,7 @@ class ShapeParam {
 };
 template<class T>
 inline T ShapeParam<T>::get(ShapeParamIndex ind) const {
+    return attribs[ind];
 }
 
 template<class T>
