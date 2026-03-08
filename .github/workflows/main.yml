@@ -1,22 +1,33 @@
-name: CI # Workflow name
-on: # Trigger events
+[cite_start]name: CI # Nazwa workflow [cite: 89]
+
+[cite_start]on: # Wyzwalacze zdarzeń [cite: 90]
   push:
     branches:
-      - main # On pushes to main
+      - [cite_start]main # Uruchom przy pushu do main [cite: 92]
   pull_request:
     branches:
-      - main # On pull requests to main
-jobs:
-  build: # Job name
-    runs-on: ${{ matrix.os }} # Operating system from matrix
+      - [cite_start]main # Uruchom przy pull requeście do main [cite: 95]
+
+[cite_start]jobs: # Definicja zadań [cite: 96]
+  [cite_start]build: # Nazwa zadania [cite: 98]
+    [cite_start]runs-on: ${{ matrix.os }} # System operacyjny z macierzy [cite: 99]
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest] # Dodano macOS
-    steps:
-      - name: Checkout # Check out the code
-        uses: actions/checkout@v3
-      - name: Set up CMake # Configure CMake
-        uses: jwlawson/actions-setup-cmake@v1
-        with:
-          cmake-version: '3.20.0' # CMake version
+        [cite_start]os: [ubuntu-latest, windows-latest] # Testy na Ubuntu i Windows [cite: 102]
+    
+    [cite_start]steps: # Kroki do wykonania [cite: 103]
+      - [cite_start]name: Checkout # Pobranie kodu [cite: 104]
+        [cite_start]uses: actions/checkout@v3 [cite: 105]
 
+      - [cite_start]name: Check code format # Automatyczne sprawdzanie formatowania [cite: 112, 117]
+        uses: DoozyX/clang-format-lint-action@v0.16
+        with:
+          source: '.'
+          extensions: 'hpp,cpp,h,c'
+          clangFormatVersion: 13
+          inplace: False
+
+      - [cite_start]name: Set up CMake # Konfiguracja CMake [cite: 106]
+        [cite_start]uses: jwlawson/actions-setup-cmake@v1 [cite: 107]
+        with:
+          [cite_start]cmake-version: '3.20.0' # Wersja CMake [cite: 108]
