@@ -2,7 +2,7 @@
 #define _ELLIPSOID_H
 
 #include "Shape3D.h"
-#include "ShapeResultData.h"
+#include "ShapeResult.h"
 #include <string>
 #include <cmath>
 #include <iostream>
@@ -13,15 +13,15 @@ using namespace std;
 template<class T>
 class Ellipsoid : public Shape3D<T> {
 public:
-    inline virtual ShapeResultData<T> compute();
+    inline virtual ShapeResult<T> compute();
 
     inline string print();
     inline Ellipsoid(const ShapeParam<T>& param);
 };
 
 template<class T>
-inline ShapeResultData<T> Ellipsoid<T>::compute() {
-    ShapeResultData<T> results;
+inline ShapeResult<T> Ellipsoid<T>::compute() {
+    ShapeResult<T> results;
     const T PI = static_cast<T>(3.141592653589793);
 
     T a = this->param.values[0];
