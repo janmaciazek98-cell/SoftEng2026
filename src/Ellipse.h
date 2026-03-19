@@ -11,39 +11,47 @@
 
 using namespace std;
 
-template <class T> class Ellipse : public Shape2D<T> {
+template <class T> 
+class Ellipse : public Shape2D<T> {
 public:
     inline ShapeResult<T> compute();
     inline string print();
     inline Ellipse(const ShapeParam<T>& param);
 };
 
-template <class T> inline ShapeResult<T> Ellipse<T>::compute()
+template <class T> 
+inline ShapeResult<T> Ellipse<T>::compute()
 {
     ShapeResult<T> result;
-
-    // Używamy m_param zamiast param!
-    T a = this->m_param.get_attrib(PARAM_RADIUS);
+    
+    // Pobieramy parametry
+    T a = this->m_param.get_attrib(PARAM_RADIUS); 
     T b = this->m_param.get_attrib(PARAM_RADIUS_2);
+    
+    // Domyślnie ustawiamy pole na 0
+    T area = 0; 
 
-    T area = (T)3.141592653589 * a * b;
+    // Liczymy pole TYLKO wtedy, gdy oba promienie są dodatnie (logika geometryczna)
+    if (a > 0 && b > 0) {
+        area = (T)3.141592653589 * a * b;
+    }
+
     result.set_attrib(RESULT_AREA, area);
-
+    
     return result;
 }
 
-template <class T> inline string Ellipse<T>::print()
-{
-    // Tutaj też m_param
-    T a = this->m_param.get_attrib(PARAM_RADIUS);
+template <class T> 
+inline string Ellipse<T>::print() 
+{ 
+    T a = this->m_param.get_attrib(PARAM_RADIUS); 
     T b = this->m_param.get_attrib(PARAM_RADIUS_2);
-
-    return "Ellipse(radius_x: " + to_string(a) + ", radius_y: " + to_string(b)
-        + ")";
+    
+    return "Ellipse(radius_x: " + to_string(a) + ", radius_y: " + to_string(b) + ")"; 
 }
 
 template <class T>
-inline Ellipse<T>::Ellipse(const ShapeParam<T>& param): Shape2D<T>(param)
+inline Ellipse<T>::Ellipse(const ShapeParam<T>& param) : Shape2D<T>(param)
 {}
 
 #endif
