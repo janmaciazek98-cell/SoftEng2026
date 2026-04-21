@@ -45,6 +45,15 @@ add_test(NAME test_circle COMMAND test_circle)
 add_test(NAME test_shape1 COMMAND test_shape1)
 #add_test(NAME test_shape2 COMMAND test_shape2)
 
+
+# --- Testy jednostkowe (Unit Tests) ---
+add_executable(test_unit_ellipsoid src/tests/unit/test_ellipsoid.cpp)
+target_link_libraries(test_unit_ellipsoid gtest gtest_main ShapeLib)
+target_include_directories(test_unit_ellipsoid PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${PROJECT_BINARY_DIR})
+
+add_test(NAME test_unit_ellipsoid COMMAND test_unit_ellipsoid)
+
+
 # ===== TEST 2 (TRIANGLE) =====
 add_executable(test_triangle src/tests/smoke/test_triangle.cpp)
 target_link_libraries(test_triangle gtest gtest_main ShapeLib)
@@ -57,3 +66,4 @@ add_executable(test_ellipse src/tests/smoke/ellipse_test.cpp)
 target_link_libraries(test_ellipse gtest gtest_main ShapeLib)
 target_include_directories(test_ellipse PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src  PRIVATE ${PROJECT_BINARY_DIR})
 add_test(NAME test_ellipse COMMAND test_ellipse)
+
