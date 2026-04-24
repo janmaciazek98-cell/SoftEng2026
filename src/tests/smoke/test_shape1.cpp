@@ -1,4 +1,3 @@
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <gtest/gtest.h>
@@ -29,7 +28,6 @@ TEST(test_shape1, AddFunction)
     shape.reset(nullptr);
     ASSERT_EQ(shape.get(), nullptr);
 }
-
 
 int main(int argc, char** argv)
 {

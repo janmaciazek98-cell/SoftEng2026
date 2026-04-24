@@ -5,6 +5,7 @@
 #include "ShapeResultData.h"
 #include <string>
 #include <cmath>
+#include <stdexcept>
 // #include <numbers> // (C++20)
 using namespace std;
 #include "ShapeParam.h"
@@ -25,11 +26,25 @@ template <class T> inline ShapeResult<T> Torus<T>::compute()
     T R = this->m_param.get_attrib(PARAM_RADIUS);
     T r = this->m_param.get_attrib(PARAM_RADIUS_2);
 
-    // const T PI = static_cast<T>(numbers::pi); // (C++20)
+    if (R < static_cast<T>(0) || r < static_cast<T>(0))
+    {
+        throw invalid_argument("Radius cannot be negative");
+    }
+
+    if (r >= R)
+    {
+        throw invalid_argument("Invalid torus geometry (r must be < R)");
+    }
+
     const T PI = static_cast<T>(M_PI);
 
-    T volume = 2 * PI * PI * R * r * r;
-    T surface = 4 * PI * PI * R * r;
+    T volume = static_cast<T>(2) * PI * PI * R * r * r;
+    T surface = static_cast<T>(4) * PI * PI * R * r;
+
+    if (!isfinite(volume) || !isfinite(surface))
+    {
+        throw overflow_error("Numeric overflow during torus computation");
+    }
 
     result.set_attrib(RESULT_VOLUME, volume);
     result.set_attrib(RESULT_SURFACE, surface);
