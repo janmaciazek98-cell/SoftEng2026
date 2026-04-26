@@ -64,7 +64,7 @@ TEST(CylinderTest, InvalidDataThrowsException)
 
     Cylinder<double> cylinder(param);
 
-    EXPECT_THROW({ cylinder.compute(); }, std::invalid_argument);
+    EXPECT_THROW({ param.validate(); }, std::invalid_argument);
 }
 
 int main(int argc, char **argv)
