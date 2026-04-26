@@ -39,7 +39,8 @@ target_link_libraries(test_shape1 gtest gtest_main ShapeLib)
 target_include_directories(test_shape1 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${PROJECT_BINARY_DIR})
 add_test(NAME test_shape1 COMMAND test_shape1)
 
-add_executable(test_cylinder src/tests/test_cylinder.cpp)
+# ===== TEST 2 =====
+add_executable(test_cylinder src/tests/unit/test_cylinder.cpp)
 target_link_libraries(test_cylinder gtest gtest_main ShapeLib)
 target_include_directories(test_cylinder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src PRIVATE ${PROJECT_BINARY_DIR})
 add_test(NAME test_cylinder COMMAND test_cylinder)

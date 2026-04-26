@@ -38,6 +38,23 @@ inline bool ShapeParam<T>::set_attrib(ShapeParamIndex ind, const T & val) {
 
 template<class T>
 inline bool ShapeParam<T>::validate() const {
+  switch (type) {
+    case PT_CYLINDER:
+    {
+      T r = get_attrib(ShapeParamIndex::PARAM_RADIUS);
+      T h = get_attrib(ShapeParamIndex::PARAM_HEIGHT);
+
+      if (r < static_cast<T>(0) || h < static_cast<T>(0))
+      {
+        throw std::invalid_argument("Promien i wysokosc nie moga byc ujemne");
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
+
   return true;
 }
 
