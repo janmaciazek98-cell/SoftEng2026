@@ -1,36 +1,46 @@
+#include <memory>
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <gtest/gtest.h>
+#include <chrono> // Do pomiaru czasu
 #include "ShapeFactory.h"
 
-TEST(test_shape1, AddFunction)
+// TEST 1: Wydajnoœæ i Pamiêæ (unique_ptr)
+TEST(test_shape1, PerformanceAndMemoryTest)
 {
-    bool res = true;
-    ShapeParam<float> param;
-    res = param.set_attrib(ShapeParamIndex::PARAM_RADIUS, 1.f);
-    ASSERT_NE(res, false);
-
+    ShapeParam<double> param;
+    param.set_attrib(ShapeParamIndex::PARAM_RADIUS, 1.0);
     param.type = ShapeType::PT_CIRCLE;
 
-    res = param.validate();
-    ASSERT_NE(res, false);
-
+    // unique_ptr automatycznie sprz¹ta pamiêæ - brak wycieków! [cite: 461]
     auto shape =
-        std::unique_ptr<IShape<float>>(ShapeFactory<float>::create(param));
+        std::unique_ptr<IShape<double>>(ShapeFactory<double>::create(param));
     ASSERT_NE(shape, nullptr);
 
-#if 0
-    ShapeResult<float> data=shape->compute();
-    float area=data.get_attrib(ShapeResultIndex::RESULT_AREA);
-    ASSERT_NE(area, 0.f);
-#endif
+    // Pomiar czasu: 100 iteracji [cite: 462]
+    auto start = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < 100; ++i)
+    {
+        shape->compute();
+    }
+    auto end = std::chrono::high_resolution_clock::now();
 
-    shape.reset(nullptr);
-    ASSERT_EQ(shape.get(), nullptr);
+    auto duration =
+        std::chrono::duration_cast<std::chrono::microseconds>(end - start)
+            .count();
+    // Warunek: czas < 1ms (1000 mikrosekund) [cite: 462]
+    EXPECT_LT(duration, 1000);
 }
 
-int main(int argc, char** argv)
+// TEST 2: Obs³uga ró¿nych typów danych (Template) [cite: 462]
+TEST(test_shape1, MultiTypeSupportTest)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    // Sprawdzamy typ float
+    ShapeParam<float> pFloat;
+    pFloat.type = ShapeType::PT_CIRCLE;
+    pFloat.set_attrib(ShapeParamIndex::PARAM_RADIUS, 2.0f);
+    auto sFloat =
+        std::unique_ptr<IShape<float>>(ShapeFactory<float>::create(pFloat));
+    EXPECT_GT(sFloat->compute().get_attrib(ShapeResultIndex::RESULT_AREA),
+              0.0f);
 }

@@ -1,35 +1,21 @@
-#ifndef _CONE_H
-#define _CONE_H
+#pragma once
+#include "IShape.h"
+#include <cmath>
 
+template <typename T> class Cone : public IShape<T> {
+public:
+    Cone(T radius, T height): r(radius), h(height) {}
 
-#include "Shape3D.h"
-#include "ShapeResultData.h"
-#include <string>
-using namespace std;
-#include "ShapeParam.h"
+    ShapeResult<T> compute() override
+    {
+        ShapeResult<T> res;
+        // Objêtoœæ: V = 1/3 * PI * r^2 * h
+        T volume =
+            (static_cast<T>(1) / static_cast<T>(3)) * M_PI * std::pow(r, 2) * h;
+        res.set_attrib(ShapeResultIndex::RESULT_VOLUME, volume);
+        return res;
+    }
 
-template<class T>
-class Cone : public Shape3D<T> {
-  public:
-    inline virtual ShapeResult<T> compute();
-
-    inline string print();
-
-    inline Cone(const ShapeParam<T> & param);
-
+private:
+    T r, h;
 };
-template<class T>
-inline ShapeResult<T> Cone<T>::compute() {
-  return ShapeResult<T>();
-}
-
-template<class T>
-inline string Cone<T>::print() {
-  return "";
-}
-
-template<class T>
-inline Cone<T>::Cone(const ShapeParam<T> & param) : Shape3D<T>(param) {
-}
-
-#endif
