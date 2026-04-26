@@ -4,6 +4,9 @@
 #include "Shape2D.h"
 #include "ShapeResultData.h"
 #include <string>
+#include <stdexcept>
+#include <cmath>
+
 using namespace std;
 #include "ShapeParam.h"
 
@@ -16,13 +19,24 @@ public:
 
 template <class T> inline ShapeResult<T> Rectangle<T>::compute()
 {
+    ShapeResult<T> res;
+
     T a = this->m_param.get_attrib(PARAM_WIDTH);
     T b = this->m_param.get_attrib(PARAM_HEIGHT);
 
-    T area = a * b;
-    T perimeter = 2 * (a + b);
+    if (a < static_cast<T>(0) || b < static_cast<T>(0))
+    {
+        throw invalid_argument("Rectangle dimensions cannot be negative");
+    }
 
-    ShapeResult<T> res;
+    T area = a * b;
+    T perimeter = static_cast<T>(2) * (a + b);
+
+    if (!isfinite(area) || !isfinite(perimeter))
+    {
+        throw overflow_error("Numeric overflow during rectangle computation");
+    }
+
     res.set_attrib(RESULT_AREA, area);
     res.set_attrib(RESULT_PERIMETER, perimeter);
 
@@ -34,7 +48,7 @@ template <class T> inline string Rectangle<T>::print()
     T a = this->m_param.get_attrib(PARAM_WIDTH);
     T b = this->m_param.get_attrib(PARAM_HEIGHT);
 
-    return "Rectangle a=" + to_string(a) + " b=" + to_string(b);
+    return "Rectangle(a=" + to_string(a) + ", b=" + to_string(b) + ")";
 }
 
 template <class T>
